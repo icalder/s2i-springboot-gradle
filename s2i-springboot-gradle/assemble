@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Default destination for tar file containing sources and scripts is /tmp
+pushd /tmp/src
+
+# restore build artifacts
+if [ "$(ls /tmp/s2i/artifacts/ 2>/dev/null)" ]; then
+  mv /tmp/s2i/artifacts/* .
+else
+  sh gradlew clean
+fi
+
+sh gradlew build
+mv build/libs/*.jar /opt/app.jar
+popd
